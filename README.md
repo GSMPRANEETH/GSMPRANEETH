@@ -1,16 +1,20 @@
-## Hi there 👋
+## Hi there 👋  
 
-<!--
-**GSMPRANEETH/GSMPRANEETH** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Welcome to my GitHub! I'm passionate about building **web applications, mobile apps, and AI/ML projects**. Here, you'll find a collection of my work, experiments, and learning journeys.
 
-Here are some ideas to get you started:
+### 🚀 Tech Stack  
+- **Languages:** Python, HTML, CSS  
+- **Frameworks & Tools:** Django  
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 🔍 What I Do  
+- 🌐 Web Development  
+- 📱 Mobile App Development  
+- 🤖 Machine Learning & AI  
+
+### 📫 Connect With Me  
+Find my professional updates and projects on **[LinkedIn](https://www.linkedin.com/in/gsmpraneeth/)**.  
+
+### ⚡ My favourite quote
+_"My unmatched perspicacity and sheer indefatigability make me a feared opponent in any realm of human endeavors."_  
+
+---
