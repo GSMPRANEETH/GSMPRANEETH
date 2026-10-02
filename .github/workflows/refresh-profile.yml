@@ -1,0 +1,38 @@
+name: Refresh profile
+
+on:
+  schedule:
+    - cron: '23 2 * * *' # 07:53 IST; away from the busy start of the hour.
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [README.md, scripts/refresh-profile.py, .github/workflows/refresh-profile.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-profile
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.repository == 'GSMPRANEETH/GSMPRANEETH'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Check generator and update public snapshot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/refresh-profile.py --check
+          python3 scripts/refresh-profile.py
+      - name: Commit changes when the snapshot changed
+        run: |
+          git add README.md assets/activity.svg
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh public project snapshot'
+          git push

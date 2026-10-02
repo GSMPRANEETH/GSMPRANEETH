@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="255" viewBox="0 0 820 255" role="img" aria-labelledby="title desc">
+<title id="title">Public repository snapshot</title>
+<desc id="desc">21 public repositories, including forks. Latest original projects: extension, wd201, capstone2. Snapshot 02 Oct 2026, India time.</desc>
+<style>
+.mono,.meta{font-family:ui-monospace,Consolas,monospace}.name,.count{font-family:Arial,Helvetica,sans-serif}.name{font-size:17px;font-weight:700;fill:#eeeae1}.meta{font-size:11px;fill:#b0b0a4}.dot{animation:pulse 3s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}@media(prefers-reduced-motion:reduce){.dot{animation:none}}
+</style>
+<rect width="820" height="255" rx="14" fill="#151613"/>
+<circle cx="32" cy="34" r="4" fill="#ff7547" class="dot"/>
+<text x="46" y="38" class="mono" font-size="11" letter-spacing="1.5" fill="#eeeae1">PUBLIC WORK / GITHUB</text>
+<text x="788" y="38" text-anchor="end" class="meta">02 Oct 2026 IST</text>
+<path d="M32 57h756M252 77v137M32 226h756" stroke="#eeeae1" stroke-opacity=".15"/>
+<text x="30" y="137" class="count" font-size="63" font-weight="700" fill="#ff7547">21</text>
+<text x="32" y="163" class="meta">public repositories</text>
+<text x="32" y="180" class="meta">including forks</text>
+<text x="284" y="104" class="name">extension</text><text x="284" y="121" class="meta">JavaScript · last pushed 06 Sep 2026</text><text x="284" y="149" class="name">wd201</text><text x="284" y="166" class="meta">JavaScript · last pushed 06 Sep 2026</text><text x="284" y="194" class="name">capstone2</text><text x="284" y="211" class="meta">JavaScript · last pushed 06 Sep 2026</text>
+<text x="32" y="245" class="meta">Primary repo languages: JavaScript / TypeScript / HTML</text>
+</svg>
