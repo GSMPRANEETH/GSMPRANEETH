@@ -31,4 +31,4 @@ Also: a [camera marker scanner](https://github.com/GSMPRANEETH/alemeno_) and a [
 
 <!-- recent-work:end -->
 
-<sub>Updated daily by [GitHub Actions](https://github.com/GSMPRANEETH/GSMPRANEETH/actions/workflows/refresh-profile.yml). These are repository push dates, not a measure of hours worked. [How it updates](./scripts/refresh-profile.py).</sub>
+<sub>Updated daily by [GitHub Actions](https://github.com/GSMPRANEETH/GSMPRANEETH/actions/workflows/refresh-profile.yml). [How it updates](./scripts/refresh-profile.py).</sub>
