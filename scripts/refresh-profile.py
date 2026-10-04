@@ -1,6 +1,5 @@
 """Refresh from public GitHub data. Check: python3 scripts/refresh-profile.py --check."""
 
-from collections import Counter
 from datetime import datetime
 from html import escape
 import json
@@ -25,12 +24,12 @@ def recent_repositories(repositories):
             raise ValueError("Unexpected repository URL")
         if repo.get("pushed_at"):
             datetime.fromisoformat(repo["pushed_at"].replace("Z", "+00:00"))
-    # Tutorial and profile updates aren't project work; forks retain their team attribution above.
+    # Keep daily refreshes within the projects selected for this profile.
     return sorted(
-        (repo for repo in repositories if not repo["fork"] and not repo["private"]
-         and repo.get("pushed_at") and repo["name"] not in {OWNER, "skills-introduction-to-github"}),
+        (repo for repo in repositories if not repo["private"]
+         and repo.get("pushed_at") and repo["name"] == "TEAM-5"),
         key=lambda repo: repo["pushed_at"], reverse=True,
-    )[:3]
+    )
 
 
 def push_date(repo):
@@ -40,34 +39,28 @@ def push_date(repo):
 
 
 def render_panel(repositories, recent, snapshot):
-    languages = Counter(repo["language"] for repo in repositories
-                        if not repo["fork"] and not repo["private"] and repo.get("language"))
-    language_text = " / ".join(language for language, _ in languages.most_common(3))
     rows = []
     for index, repo in enumerate(recent):
-        y = 104 + index * 45
+        y = 96 + index * 45
         name = repo["name"] if len(repo["name"]) <= 27 else repo["name"][:24] + "..."
         rows.append(f'<text x="284" y="{y}" class="name">{escape(name)}</text>'
                     f'<text x="284" y="{y + 17}" class="meta">{escape(repo.get("language") or "No primary language")} · last pushed {push_date(repo)}</text>')
     if not recent:
         rows.append('<text x="284" y="114" class="name">No public project updates yet.</text>')
-    public_count = sum(not repo["private"] for repo in repositories)
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="820" height="255" viewBox="0 0 820 255" role="img" aria-labelledby="title desc">
-<title id="title">Public repository snapshot</title>
-<desc id="desc">{public_count} public repositories, including forks. Latest original projects: {escape(', '.join(repo['name'] for repo in recent)) or 'none'}. Snapshot {snapshot}, India time.</desc>
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="820" height="150" viewBox="0 0 820 150" role="img" aria-labelledby="title desc">
+<title id="title">AuraSync source activity</title>
+<desc id="desc">AuraSync public repository: {escape(', '.join(repo['name'] for repo in recent)) or 'not available'}. Snapshot {snapshot}, India time.</desc>
 <style>
 .mono,.meta{{font-family:ui-monospace,Consolas,monospace}}.name,.count{{font-family:Arial,Helvetica,sans-serif}}.name{{font-size:17px;font-weight:700;fill:#eeeae1}}.meta{{font-size:11px;fill:#b0b0a4}}.dot{{animation:pulse 3s ease-in-out infinite}}@keyframes pulse{{50%{{opacity:.35}}}}@media(prefers-reduced-motion:reduce){{.dot{{animation:none}}}}
 </style>
-<rect width="820" height="255" rx="14" fill="#151613"/>
+<rect width="820" height="150" rx="14" fill="#151613"/>
 <circle cx="32" cy="34" r="4" fill="#ff7547" class="dot"/>
-<text x="46" y="38" class="mono" font-size="11" letter-spacing="1.5" fill="#eeeae1">PUBLIC WORK / GITHUB</text>
+<text x="46" y="38" class="mono" font-size="11" letter-spacing="1.5" fill="#eeeae1">AURASYNC / PUBLIC ACTIVITY</text>
 <text x="788" y="38" text-anchor="end" class="meta">{snapshot} IST</text>
-<path d="M32 57h756M252 77v137M32 226h756" stroke="#eeeae1" stroke-opacity=".15"/>
-<text x="30" y="137" class="count" font-size="63" font-weight="700" fill="#ff7547">{public_count:02}</text>
-<text x="32" y="163" class="meta">public repositories</text>
-<text x="32" y="180" class="meta">including forks</text>
+<path d="M32 57h756M252 77v46" stroke="#eeeae1" stroke-opacity=".15"/>
+<text x="32" y="102" class="name" fill="#ff7547">AuraSync</text>
+<text x="32" y="121" class="meta">team project / public source</text>
 {''.join(rows)}
-<text x="32" y="245" class="meta">Primary repo languages: {escape(language_text or 'not available yet')}</text>
 </svg>
 '''
     ElementTree.fromstring(svg)
@@ -90,22 +83,22 @@ def self_check():
                 "pushed_at": date, "fork": False, "private": False,
                 "language": "TypeScript", **changes}
 
-    repositories = [repo("older", "2026-05-01T01:00:00Z"), repo("current"),
-                    repo("fork", fork=True), repo("private", private=True), repo(OWNER),
-                    repo("skills-introduction-to-github")]
+    repositories = [repo("TEAM-5"), repo("capstone2"), repo("extension"),
+                    repo("dtihsb", private=True), repo(OWNER)]
     recent = recent_repositories(repositories)
-    assert [item["name"] for item in recent] == ["current", "older"]
-    assert len(recent_repositories([repo(str(i)) for i in range(5)])) == 3
+    assert [item["name"] for item in recent] == ["TEAM-5"]
+    assert recent_repositories([repo("TEAM-5", fork=True)])
+    assert not recent_repositories([repo("TEAM-5", private=True)])
     assert push_date(recent[0]) == "07 Sep 2026", "Use India time at date boundaries"
     xml = render_panel(repositories, recent, "02 Oct 2026")
-    assert "5 public repositories" in xml and "Primary repo languages: TypeScript" in xml
-    assert "fork ·" not in xml and "private ·" not in xml
+    assert "TEAM-5" in xml and "AuraSync source activity" in xml
+    assert "capstone2" not in xml and "extension" not in xml and "dtihsb" not in xml
     repositories[0]["language"] = 'C<&"'
     ElementTree.fromstring(render_panel(repositories, recent, "02 Oct 2026"))
     original = "Keep this intro\n" + START + "old content" + END + "\nKeep this footer"
     updated = update_readme(original, recent)
     assert updated.startswith("Keep this intro") and updated.endswith("Keep this footer")
-    assert "[current]" in updated and "old content" not in updated
+    assert "[TEAM-5]" in updated and "old content" not in updated
     assert "No public project updates yet." in render_panel([], [], "02 Oct 2026")
     for bad in ["no markers", END + START, START + START + END]:
         try:
